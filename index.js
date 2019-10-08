@@ -41,7 +41,7 @@ let handle = (data, callback) => {
     };
 
     request(options, (error, response, body) => {
-        if (error || response.statusCode >= 400) {
+        if (error || response.statusCode >= 400 || ("Response" in body && body["Response"] === "Error")) {
             callback(response.statusCode, {
                 jobRunID: data.id,
                 status: "errored",
@@ -91,3 +91,5 @@ exports.gcpservice = (req, res) => {
         res.status(statusCode).send(responseData);
     });
 };
+
+module.exports.createRequest = handle;
